@@ -99,7 +99,7 @@ class Login extends Component {
                         {/* Submit  */}
                         <div className="createAccount">
                             <button type="login" onClick={(e) => { this.handleClick(e); }} >Login</button><br />
-                            <b><big>New user?</big></b> <a onClick={this.handlePageChange} className='signupLink'>Create a New Account</a>
+                            <b><big>New user?</big></b> <button onClick={this.handlePageChange} className='signupLink'>Create a New Account</button>
                         </div>
                     </form>
                 </div>

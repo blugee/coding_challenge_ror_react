@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Switch, Route, } from "react-router-dom";
-import Login from './Components/Login';
-import Dashboard from './Components/Dashboard';
-import Registration from './Components/Registration';
+import { BrowserRouter as Switch, Redirect, Route, } from "react-router-dom";
+import Login from './Route/Login';
+import Dashboard from './Route/Dashboard';
+import Registration from './Route/Registration';
 import UserContext from './contexts/UserContext';
 import RestrictedRoute from './utils/RestrictedRoute';
 import { connect } from "react-redux";
@@ -25,15 +25,18 @@ class App extends React.Component {
 
   }
 
+  componentDidMount() {
+    // this.setState({ authenticated: true });
+  }
+
   render() {
     return (
       <>
         <UserContext.Provider value={this.state}>
           <Switch>
-
-            <Route path="/login">
-              <Login />
-            </Route>
+          <Route exact path={`/login`} render={props =>
+                    !this.state.authenticated ? <React.Fragment><Login {...props} /></React.Fragment> : <Redirect to={`/dashboard`} />
+                  } />
             <Route exact path="/registration">
               <Registration />
             </Route>
