@@ -5,7 +5,6 @@ import Dashboard from './Route/Dashboard';
 import Registration from './Route/Registration';
 import UserContext from './contexts/UserContext';
 import RestrictedRoute from './utils/RestrictedRoute';
-import { connect } from "react-redux";
 
 class App extends React.Component {
 

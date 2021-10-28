@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./index.css";
 import { withRouter } from "react-router-dom";
+import { NotificationError } from "../../utils/Notification";
 
 
 const emailRegex = RegExp(
@@ -34,29 +35,19 @@ class Registration extends Component {
         return valid;
     };
 
-    // onChange = (name, event) => {
-    //     debugger
-    //     let data = this.state.data;
-    //     data[name] = event.target.value;
-    //     this.setState({
-    //         data: data,
-    //     });
-    // };
-
     handleClick = () => {
         this.props.history.push("/login");
-
     };
 
     handleSubmit = async e => {
+        e.preventDefault()
         let isValid = await this.formValid(this.state.formErrors, this.state.data)
         if (isValid) {
             debugger
             console.log(this.state.data)
-            // this.setData
-            //this.state.data
-        } else {
-            alert('Provide mendatory value')
+           
+        } else{
+            NotificationError('Please Provide Mandatory value')
         }
     }
 
@@ -99,7 +90,6 @@ class Registration extends Component {
 
         return (
             <div className="wrapper">
-
                 <div className="form-wrapper">
 
                     <h1>Create Account</h1>
@@ -123,7 +113,6 @@ class Registration extends Component {
                             )}
 
                         </div>
-
 
                         {/* LastName */}
                         <div className="lastName">
@@ -158,7 +147,6 @@ class Registration extends Component {
                             )}
                         </div>
 
-
                         {/* Password */}
                         <div className="password">
                             <label htmlFor="password">Password</label>
@@ -174,7 +162,6 @@ class Registration extends Component {
                                 <span className="errorMessage">{formErrors.password}</span>
                             )}
                         </div>
-
 
                         {/* Submit  */}
                         <div className="createAccount">

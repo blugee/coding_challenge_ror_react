@@ -1,93 +1,84 @@
 import React from 'react'
 import DefaultTable from '../../Components/DefaultTable';
+// import { Tooltip } from 'antd';
+import dataJson from "../companies.json"
+import { DataGrid } from '@mui/x-data-grid';
 
-const data = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-    },
-    {
-        key: '4',
-        name: 'Jim Red',
-        age: 32,
-        address: 'London No. 2 Lake Park',
-    },
-    {
-        key: '5',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '6',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '7',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-    },
-    {
-        key: '8',
-        name: 'Jim Red',
-        age: 32,
-        address: 'London No. 2 Lake Park',
-    },
-];
+let rows = dataJson
 
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            numberOfCompanies:'',
+            rowsPerPage:10,
+        }
 
-        }
-        this.sorter = (v1, v2) => {
-            return (v1 === null) - (v2 === null) || (isFinite(v1) && isFinite(v2) ? v1 - v2 : v1.toString().localeCompare(v2))
-        }
-        this.columns = [
-            {
-                title: 'Name',
-                dataIndex: 'name',
-                isFilter:true,
-                defaultSortOrder: 'descend',
-                onFilter: (value, record) => record.name.indexOf(value) === 0,
-                sorter: (a, b) => this.sorter(a.name, b.name),
-            },
-            {
-                title: 'Age',
-                dataIndex: 'age',
-                defaultSortOrder: 'descend',
-                sorter: (a, b) => this.sorter(a.age, b.age),
-            },
-            {
-                title: 'Address',
-                dataIndex: 'address',
-            },
+        this.columns=[
+            
+                {field:"name",headerName : 'Name' ,width:150}, 
+                {field:"address",headerName : 'address',width:400},
+                {field:"avatar_url",headerName : 'avatar_url',width:400}, 
+                {field:"business_structure",headerName : 'business_structure',width:200}, 
+                {field:"naics_code",headerName : 'naics_code',width:200}, 
+                {field:"created_at",headerName : 'created_at',width:200}, 
+                {field:"updated_at",headerName : 'updated_at',width:200}, 
         ]
-
     }
+
+
+componentDidMount=()=>{
+    this.fetchData()
+}
+
+fetchData=()=>{
+
+for (let i = 0; i < rows.length; i++) {
+    const address = rows[i].addresses
+    if(address){
+        let primaryAddressIndex = address.findIndex(item => item.type === 'primary' )
+        if(primaryAddressIndex > -1){
+            let primaryAddress = `${address[primaryAddressIndex].street_address} , ${address[primaryAddressIndex].city} , ${address[primaryAddressIndex].state} , ${address[primaryAddressIndex].postal_code}`
+            rows[i]['address'] = primaryAddress
+        }else{
+            rows[i]['address'] = '---'
+        }
+    }
+    
+}
+let numberOfCompanies= rows.length
+this.setState({numberOfCompanies:numberOfCompanies})
+}
+
+ handleChangeRowsPerPage = (event) => {
+     debugger
+    this.setState({rowsPerPage:+event.target.value});
+
+  };
+
+
     render() {
+        const {numberOfCompanies, rowsPerPage}=this.state
         return (
             <>
+
                 <h1>Dashboard</h1>
-                <DefaultTable data={data} columns={this.columns} />
+
+                <h2>Number Of Companies : {numberOfCompanies}</h2>
+
+                <div style={{ height: 800, width: '100%' }}>
+
+                <DataGrid
+                rowsPerPageOptions={[10, 25, 100]}
+                rows={rows}
+                columns={this.columns}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={this.handleChangeRowsPerPage}
+                // checkboxSelection
+                />
+
+                </div>
+
             </>
         );
     }
