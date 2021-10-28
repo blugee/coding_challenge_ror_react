@@ -1,10 +1,11 @@
 import React from 'react'
-import DefaultTable from '../../Components/DefaultTable';
-// import { Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import dataJson from "../companies.json"
+import naics from '../naics.json'
 import { DataGrid } from '@mui/x-data-grid';
 
 let rows = dataJson
+let naicsData =naics
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class Dashboard extends React.Component {
                 {field:"address",headerName : 'address',width:400},
                 {field:"avatar_url",headerName : 'avatar_url',width:400}, 
                 {field:"business_structure",headerName : 'business_structure',width:200}, 
-                {field:"naics_code",headerName : 'naics_code',width:200}, 
+                {field:"naics_code",headerName : 'naics_code',width:200,  renderCell: (cellValues) =>{return(<Tooltip title={`Title:- ${cellValues.row.title} , Description:- ${cellValues.row.description}`} >{cellValues.row.naics_code}</Tooltip>)}} , 
                 {field:"created_at",headerName : 'created_at',width:200}, 
                 {field:"updated_at",headerName : 'updated_at',width:200}, 
         ]
@@ -35,6 +36,17 @@ fetchData=()=>{
 
 for (let i = 0; i < rows.length; i++) {
     const address = rows[i].addresses
+    const isNaicsCode = rows[i].naics_code
+    if(isNaicsCode){
+    let matchNaicsIndex = naicsData.findIndex(item => item.Code === Number(isNaicsCode) )
+        if(matchNaicsIndex > -1){
+        let title = naicsData[matchNaicsIndex].Title
+        let Description  = naicsData[matchNaicsIndex].Description
+        rows[i]['title']=title
+        rows[i]['description']=Description
+        }
+    }
+    
     if(address){
         let primaryAddressIndex = address.findIndex(item => item.type === 'primary' )
         if(primaryAddressIndex > -1){
@@ -51,9 +63,7 @@ this.setState({numberOfCompanies:numberOfCompanies})
 }
 
  handleChangeRowsPerPage = (event) => {
-     debugger
     this.setState({rowsPerPage:+event.target.value});
-
   };
 
 
@@ -63,7 +73,6 @@ this.setState({numberOfCompanies:numberOfCompanies})
             <>
 
                 <h1>Dashboard</h1>
-
                 <h2>Number Of Companies : {numberOfCompanies}</h2>
 
                 <div style={{ height: 800, width: '100%' }}>
