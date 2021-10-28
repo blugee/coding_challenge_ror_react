@@ -2,6 +2,7 @@ import React from 'react'
 import { Tooltip } from 'antd';
 import dataJson from "../companies.json"
 import naics from '../naics.json'
+import 'antd/dist/antd.css';
 import { DataGrid } from '@mui/x-data-grid';
 
 let rows = dataJson
