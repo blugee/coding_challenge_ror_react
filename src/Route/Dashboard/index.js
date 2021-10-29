@@ -22,7 +22,9 @@ class Dashboard extends React.Component {
                 {field:"address",headerName : 'address',width:400},
                 {field:"avatar_url",headerName : 'avatar_url',width:400}, 
                 {field:"business_structure",headerName : 'business_structure',width:200}, 
-                {field:"naics_code",headerName : 'naics_code',width:200,  renderCell: (cellValues) =>{return(<Tooltip title={`Title:- ${cellValues.row.title} , Description:- ${cellValues.row.description}`} >{cellValues.row.naics_code}</Tooltip>)}} , 
+                {field:"naics_code",headerName : 'naics_code',width:200,
+                renderCell: (cellValues) => <Tooltip title={<div>Title:- {cellValues.row.title} <br /><br /> 
+                Description:- {cellValues.row.description}</div>} >{cellValues.row.naics_code}</Tooltip>} , 
                 {field:"created_at",headerName : 'created_at',width:200}, 
                 {field:"updated_at",headerName : 'updated_at',width:200}, 
         ]

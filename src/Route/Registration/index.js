@@ -43,7 +43,6 @@ class Registration extends Component {
         e.preventDefault()
         let isValid = await this.formValid(this.state.formErrors, this.state.data)
         if (isValid) {
-            debugger
             console.log(this.state.data)
            
         } else{
@@ -52,7 +51,6 @@ class Registration extends Component {
     }
 
     onChange = (name, event,) => {
-        debugger
         let value = event.target.value;
         let data = this.state.data;
         let formErrors = this.state.formErrors;
